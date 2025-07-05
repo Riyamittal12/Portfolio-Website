@@ -44,47 +44,7 @@ let swiperProjects = new Swiper(".projects__container", {
             spaceBetween: -56,
         },
     },
-  });
-
-/*=============== SWIPER TESTIMONIAL ===============*/
-
-/*=============== EMAIL JS ===============*/
-// const contactForm = document.getElementById('contact-form'),
-//       contactName = document.getElementById('contact-name'),
-//       contactEmail = document.getElementById('contact-email'),
-//       contactProject = document.getElementById('contact-project'),
-//       contactMessage = document.getElementById('contact-message')
-
-// const sendEmail = (e) =>{
-//     e.preventDefault()
-//     // Check if the field has a value
-//     if(contactName.value===''||contactEmail.value===''||contactProject.value===''){
-//         // Remove blue color and add red color
-//         contactMessage.classList.remove('color-blue')
-//         contactMessage.classList.add('color-red')
-//         // Show message
-//         contactMessage.textContent='Please fill all the input fields!'
-//     }else{
-//         // serviceID - templateID - #form - publicKey
-//         emailjs.sendForm('service_ey8fodo','template_39k37xn','#contact-form','CkCxrkrcQUQ25L9tw')
-//             .then(() =>{
-//                 // Show message and add color
-//                 contactMessage.classList.add('color-blue')
-//                 contactMessage.textContent='Message sent!'
-//                 // Remove message after 5 seconds
-//                 setTimeout(() =>{
-//                     contactMessage.textContent=''
-//                 },5000)
-//             }, (error) => {
-//                 alert('Oops! Please try again!', error)
-//             })
-//         // Clear the input field
-//         contactName.value = ''
-//         contactEmail.value = ''
-//         contactProject.value = ''
-//     }
-// }
-// contactForm.addEventListener('submit',sendEmail)
+});
 
 /*=============== EMAIL JS ===============*/
 const contactForm = document.getElementById('contact-form'),
@@ -115,35 +75,33 @@ const sendEmail = (e) =>{
 }
 contactForm.addEventListener('submit',sendEmail)
 
-
 /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
 const sections = document.querySelectorAll('section[id]')
     
 const scrollActive = () =>{
-  	const scrollY = window.pageYOffset
+    const scrollY = window.pageYOffset
 
-	sections.forEach(current =>{
-		const sectionHeight = current.offsetHeight,
-			  sectionTop = current.offsetTop - 58,
-			  sectionId = current.getAttribute('id'),
-			  sectionsClass = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
+    sections.forEach(current =>{
+        const sectionHeight = current.offsetHeight,
+              sectionTop = current.offsetTop - 58,
+              sectionId = current.getAttribute('id'),
+              sectionsClass = document.querySelector('.nav__menu a[href*=' + sectionId + ']')
 
-		if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
-			sectionsClass.classList.add('active-link')
-		}else{
-			sectionsClass.classList.remove('active-link')
-		}                                                    
-	})
+        if(scrollY > sectionTop && scrollY <= sectionTop + sectionHeight){
+            sectionsClass.classList.add('active-link')
+        }else{
+            sectionsClass.classList.remove('active-link')
+        }                                                    
+    })
 }
 window.addEventListener('scroll', scrollActive)
 
-
 /*=============== SHOW SCROLL UP ===============*/ 
 const scrollUp = () =>{
-	const scrollUp = document.getElementById('scroll-up')
+    const scrollUp = document.getElementById('scroll-up')
     // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scrollup class
-	this.scrollY >= 4250 ? scrollUp.classList.add('show-scroll')
-						: scrollUp.classList.remove('show-scroll')
+    this.scrollY >= 4250 ? scrollUp.classList.add('show-scroll')
+                        : scrollUp.classList.remove('show-scroll')
 }
 window.addEventListener('scroll', scrollUp)
 
@@ -200,3 +158,28 @@ sr.reveal(`.home__info div`, {delay: 600, origin: 'bottom', interval: 100})
 sr.reveal(`.skills__content:nth-child(1), .contact__content:nth-child(1)`, {origin: 'left'})
 sr.reveal(`.skills__content:nth-child(2), .contact__content:nth-child(2)`, {origin: 'right'})
 sr.reveal(`.qualification__content, .achievements__card`, {interval: 100})
+
+/*=============== CURSOR ANIMATION ===============*/
+document.addEventListener('DOMContentLoaded', () => {
+    // Create cursor element
+    const cursor = document.createElement('div');
+    cursor.classList.add('cursor');
+    document.body.appendChild(cursor);
+
+    // Update cursor position
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+    });
+
+    // Add active class on hover over interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .nav__toggle, .nav__close, .change-theme');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('active');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('active');
+        });
+    });
+});
