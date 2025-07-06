@@ -51,29 +51,51 @@ const contactForm = document.getElementById('contact-form'),
       contactName = document.getElementById('contact-name'),
       contactEmail = document.getElementById('contact-email'),
       contactProject = document.getElementById('contact-project'),
-      contactMessage = document.getElementById('contact-message')
+      contactMessage = document.getElementById('contact-message');
 
-const sendEmail = (e) =>{
-    e.preventDefault()
-    if(contactName.value===''||contactEmail.value===''||contactProject.value===''){
-        contactMessage.classList.remove('color-blue')
-        contactMessage.classList.add('color-red')
-        contactMessage.textContent='Please fill all the input fields!'
-    }else{
-        // EmailJS sendForm removed
-        contactMessage.classList.add('color-blue')
-        contactMessage.textContent='Message sent!'
-        setTimeout(() =>{
-            contactMessage.textContent=''
-        },5000)
+// Init EmailJS with your public key
+emailjs.init("bYw3m58ygOMJaZgkK");
 
-        // Clear inputs
-        contactName.value = ''
-        contactEmail.value = ''
-        contactProject.value = ''
+const sendEmail = (e) => {
+    e.preventDefault();
+
+    if (contactName.value === '' || contactEmail.value === '' || contactProject.value === '') {
+        contactMessage.classList.remove('color-blue');
+        contactMessage.classList.add('color-red');
+        contactMessage.textContent = 'Please fill all the input fields!';
+    } else {
+        emailjs.send("service_fdnttql", "template_7c66v3r", {
+            name: contactName.value,
+            email: contactEmail.value,
+            message: contactProject.value
+        })
+        .then(() => {
+            contactMessage.classList.remove('color-red');
+            contactMessage.classList.add('color-blue');
+            contactMessage.textContent = 'Message sent!';
+
+            // Show big popup
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.display = 'none';
+                contactMessage.textContent = '';
+            }, 3000);
+
+            // Clear form
+            contactName.value = '';
+            contactEmail.value = '';
+            contactProject.value = '';
+        }, (error) => {
+            contactMessage.classList.remove('color-blue');
+            contactMessage.classList.add('color-red');
+            contactMessage.textContent = 'Failed to send message. Please try again!';
+            console.error('EmailJS error:', error);
+        });
     }
 }
-contactForm.addEventListener('submit',sendEmail)
+
+contactForm.addEventListener('submit', sendEmail);
 
 /*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
 const sections = document.querySelectorAll('section[id]')
